@@ -20,6 +20,14 @@
 */
 #include "sqliteInt.h"
 #include "vdbeInt.h"
+#include <stdio.h>
+
+unsigned int vdbe_usleep = 0;
+
+void set_vdbe_usleep(unsigned int value) {
+  vdbe_usleep = value;
+  printf("set_vdbe_usleep: %u usecs.\n", vdbe_usleep);
+}
 
 /*
 ** Invoke this macro on memory cells just prior to changing the
@@ -797,6 +805,9 @@ int sqlite3VdbeExec(
   sqlite3EndBenignMalloc();
 #endif
   for(pOp=&aOp[p->pc]; 1; pOp++){
+
+    usleep(vdbe_usleep);
+
     /* Errors are detected by individual opcodes, with an immediate
     ** jumps to abort_due_to_error. */
     assert( rc==SQLITE_OK );

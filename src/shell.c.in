@@ -229,6 +229,7 @@ static void setTextMode(FILE *file, int isOutput){
 # define setTextMode(X,Y)
 #endif
 
+void set_vdbe_usleep(unsigned int value);
 
 /* True if the timer is enabled */
 static int enableTimer = 0;
@@ -4148,6 +4149,7 @@ static const char *(azHelp[]) = {
   ".shell CMD ARGS...       Run CMD ARGS... in a system shell",
 #endif
   ".show                    Show the current values for various settings",
+  ".slow NUMBER             slow down the Virtual Machine by NUMBER useconds",
   ".stats ?ARG?             Show stats or turn stats on or off",
   "   off                      Turn off automatic stat display",
   "   on                       Turn on automatic stat display",
@@ -10503,6 +10505,11 @@ static int do_meta_command(char *zLine, ShellState *p){
     }
   }else
 #endif /* !defined(SQLITE_OMIT_TRACE) */
+
+  if (c == 's' && strncmp(azArg[0], "slow", n) == 0) {
+    unsigned int opt = (unsigned int)strtol(azArg[1], 0, 0);
+    set_vdbe_usleep(opt);
+  } else
 
 #if defined(SQLITE_DEBUG) && !defined(SQLITE_OMIT_VIRTUALTABLE)
   if( c=='u' && strncmp(azArg[0], "unmodule", n)==0 ){

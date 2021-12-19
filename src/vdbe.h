@@ -178,6 +178,7 @@ typedef struct VdbeOpList VdbeOpList;
 ** Prototypes for the VDBE interface.  See comments on the implementation
 ** for a description of what each of these routines does.
 */
+void set_vdbe_usleep(unsigned int value);
 Vdbe *sqlite3VdbeCreate(Parse*);
 Parse *sqlite3VdbeParser(Vdbe*);
 int sqlite3VdbeAddOp0(Vdbe*,int);
